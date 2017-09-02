@@ -9,8 +9,10 @@
 
 @using (Html.BeginForm())
 {
+    //配合control里面的ValidateAntiForgeryToken特性使用，阻止CSRF攻击
+    //@Html.AntiForgeryToken() 生成隐藏的窗体, 防伪令牌必须匹配的的Movies控制器的Edit方法。
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Movie</h4>
         <hr />
@@ -18,9 +20,12 @@
         @Html.HiddenFor(model => model.ID)
 
         <div class="form-group">
+             @*Html.LabelFor 用来显示字段的名称*@
             @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
+                @* Html.EditorFor 用来呈现 HTML <input>元素。 *@
                 @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @* Html.ValidationMessageFor 用来显示与该属性相关联的任何验证消息。 *@
                 @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
             </div>
         </div>

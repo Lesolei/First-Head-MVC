@@ -1,4 +1,5 @@
-﻿@model IEnumerable<MVC_Example.Models.Movie>
+﻿@*指定期望的时候模型类型为Movie*@
+@model IEnumerable<MVC_Example.Models.Movie>
 
 @{
     ViewBag.Title = "Index";
@@ -43,6 +44,11 @@
             @Html.DisplayFor(modelItem => item.Price)
         </td>
         <td>
+            @* Html是一个helper对象
+               ActionLink是一个帮助方法(Helper)，便于动态生成指向Controller中操作方法 的HTML 超链接链接。
+               ActionLink方法的第一个参数是想要呈现的链接文本。
+               第二个参数是要调用的操作方法的名称（在本例中， Edit方法）。
+               最后一个参数是一个匿名对象（anonymous object），用来生成路由数据 。 *@
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
             @Html.ActionLink("Details", "Details", new { id=item.ID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.ID })
