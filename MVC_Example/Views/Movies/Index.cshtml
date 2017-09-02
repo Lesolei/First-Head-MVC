@@ -10,6 +10,18 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+@using (Html.BeginForm())
+{
+
+    <p>
+        Title: @Html.TextBox("SearchString") <br />     
+        <input type="submit" value="Filter" />
+        @* 提交表单, Html.BeginForm助手会导致窗体post到它本身 *@
+    </p>
+
+}
+
+</p>
 <table class="table">
     @*DisplayNameFor显示列名
     DisplayFor显示列内容*@

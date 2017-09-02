@@ -1,4 +1,5 @@
 ﻿using MVC_Example.Models;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -12,9 +13,21 @@ namespace MVC_Example.Controllers
         private MovieDBContext db = new MovieDBContext();
 
         // GET: Movies
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
-            return View(db.Movies.ToList());
+            //Linq查询语句，m为范围变量
+            var movies = from m in db.Movies
+                         select m;
+            if (!String.IsNullOrEmpty(searchString))
+
+            {
+
+                movies = movies.Where(s => s.Title.Contains(searchString));
+                //查询执行会被延迟，这意味着表达式的计算延迟，直到取得实际的值或调用ToList方法。
+                //Contains方法运行于数据库上
+            }
+
+            return View(movies);
         }
 
 
