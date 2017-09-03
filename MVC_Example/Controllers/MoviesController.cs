@@ -1,5 +1,6 @@
 ﻿using MVC_Example.Models;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -13,8 +14,19 @@ namespace MVC_Example.Controllers
         private MovieDBContext db = new MovieDBContext();
 
         // GET: Movies
-        public ActionResult Index(string searchString)
+        public ActionResult Index(string movieGenre, string searchString)
         {
+            var GenreLst = new List<string>();
+
+            var GenreQry = from d in db.Movies
+
+                           orderby d.Genre
+
+                           select d.Genre;
+
+            GenreLst.AddRange(GenreQry.Distinct());
+
+            ViewBag.movieGenre = new SelectList(GenreLst);
             //Linq查询语句，m为范围变量
             var movies = from m in db.Movies
                          select m;
@@ -26,10 +38,25 @@ namespace MVC_Example.Controllers
                 //查询执行会被延迟，这意味着表达式的计算延迟，直到取得实际的值或调用ToList方法。
                 //Contains方法运行于数据库上
             }
+            if (!string.IsNullOrEmpty(movieGenre))
+
+            {
+
+                movies = movies.Where(x => x.Genre == movieGenre);
+
+            }
 
             return View(movies);
         }
+        //[HttpPost]
 
+        //public string Index(FormCollection fc, string searchString)
+
+        //{
+
+        //    return "<h3> From [HttpPost]Index: " + searchString + "</h3>";
+
+        //}
 
         // GET: Movies/Details/5
         //id参数一般是通过路由数据传递.
@@ -58,7 +85,7 @@ namespace MVC_Example.Controllers
         // 详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Title,ReleaseDate,Genre,Price")] Movie movie)
+        public ActionResult Create([Bind(Include = "ID,Title,ReleaseDate,Genre,Pric,Rating")] Movie movie)
         {
             if (ModelState.IsValid)
             {
@@ -94,7 +121,7 @@ namespace MVC_Example.Controllers
         [ValidateAntiForgeryToken]
         //ValidateAntiForgeryToken用于防止伪造请求
         //下面这个方法只被post请求调用（就是当表单被保存的时候）
-        public ActionResult Edit([Bind(Include = "ID,Title,ReleaseDate,Genre,Price")] Movie movie)
+        public ActionResult Edit([Bind(Include = "ID,Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
         //绑定（Bind）属性是另一个重要安全机制，可以防止黑客攻击(从over-posting数据到你的模型)。在bind中包含你想要更改的
         {
             if (ModelState.IsValid)
@@ -108,6 +135,7 @@ namespace MVC_Example.Controllers
         }
 
         // GET: Movies/Delete/5
+        //Delete的HTTP Get 方法不会删除指定的电影，它返回删除电影的视图,防止安全漏洞
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -123,8 +151,10 @@ namespace MVC_Example.Controllers
         }
 
         // POST: Movies/Delete/5
+        //将删除数据的HttpPost方法命名为唯一签名或名称的 DeleteConfirmed 方法
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        //通过使用不同名称的方法来实现get和post具有相同签名“delete”的问题
         public ActionResult DeleteConfirmed(int id)
         {
             Movie movie = db.Movies.Find(id);

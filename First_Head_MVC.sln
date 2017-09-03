@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "First Head MVC", "MVC_Example\First Head MVC.csproj", "{91D86D1A-B253-4E97-A34F-5050018470EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "First_Head_MVC", "MVC_Example\First_Head_MVC.csproj", "{91D86D1A-B253-4E97-A34F-5050018470EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
